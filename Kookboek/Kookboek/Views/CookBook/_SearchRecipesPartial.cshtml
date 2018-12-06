@@ -1,0 +1,32 @@
+﻿@model RecipeListModel;
+
+<input type="text" name="Searchbar" value="Search..." />
+<table id="table" class="table" style="border: 1px solid black;">
+    <thead>
+        <tr>
+            <th>Recipe</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (RecipeModel recipe in Model.RecipeList)
+        {
+            var rating = @Html.Raw(Json.Serialize(recipe.Rating));
+            var totalRatings = @Html.Raw(Json.Serialize(recipe.TotalRatings));
+            <tr>
+                <td>@Html.ActionLink(recipe.Name, "ShowRecipe", "Cookbook", new { id = recipe.Id })</td>
+
+                <td>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                    <link href="~/css/rating.css" rel="stylesheet" />
+                    <div class="stars-outer">
+                        <div id='@recipe.Id' class="stars-inner"></div>
+                    </div>
+                    <script>CalculateStars('@recipe.Id', '@recipe.Rating')</script>
+                    (@recipe.TotalRatings)
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

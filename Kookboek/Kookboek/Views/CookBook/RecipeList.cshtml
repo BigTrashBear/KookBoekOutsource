@@ -1,0 +1,46 @@
+﻿@using Kookboek.Models;
+@model RecipeListModel;
+
+@{
+    ViewData["Title"] = "Recipe List";
+}
+<link href="~/css/recipeList.css" rel="stylesheet" />
+<script src="~/js/recipeListView.js"></script>
+
+<div style="background-color: #81c760;">
+    <h2>Cookbook</h2>
+</div>
+
+<div>
+    @using (Html.BeginForm(FormMethod.Post))
+    {
+
+        <input class="btn" type="submit" value="Create Recipe" style="float:left;" formaction="@Url.Action("CreateNewRecipe", "CookBook")" />
+    }
+
+</div>
+
+<div id="listparent">
+
+    <input id="allrecipesbtn" class="alignedbtn" style="background-color: #629c44;" type="button" value="All Recipes" onclick="javascript:ButtonClick(1); return false;" />
+    <input id="myrecipesbtn" class="alignedbtn" style="background-color: #81c760;" type="button" value="My Recipes" onclick="javascript:ButtonClick(2); return false;" />
+    <input id="favrecipesbtn" class="alignedbtn" style="background-color: #81c760;" type="button" value="Favorite Recipes" onclick="javascript:ButtonClick(3); return false;" />
+    <input id="searchrecipesbtn" class="alignedbtn" style="background-color: #81c760;" type="button" value="Search Recipes" onclick="javascript:ButtonClick(4); return false;" />
+</div>
+<div class="listbackground">
+    <div id="allrecipesPartial">
+        <partial name="~/Views/CookBook/_AllRecipesPartial.cshtml" />
+    </div>
+
+    <div id="myrecipesPartial" style="display:none">
+        <partial name="~/Views/CookBook/_MyRecipesPartial.cshtml" />
+    </div>
+
+    <div id="favoriterecipesPartial" style="display:none">
+        <partial name="~/Views/CookBook/_FavoriteRecipesPartial.cshtml" />
+    </div>
+
+    <div id="searchrecipesPartial" style="display:none">
+        <partial name="~/Views/CookBook/_SearchRecipesPartial.cshtml" />
+    </div>
+</div>

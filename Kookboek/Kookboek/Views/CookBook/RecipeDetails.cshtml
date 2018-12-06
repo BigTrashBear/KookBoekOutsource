@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Recipe Details";
+}
+@model Kookboek.Models.RecipeModel
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+
+    // This is called when rating is given to recipe
+    function submitRating() {
+
+        // We create form data to fill in.
+        var formData = new FormData();
+
+        // We create a var with the Id of the recipe we are rating.
+        var modelId = @Model.Id;
+        // We create a var for the rating given.
+        var inputVar = document.getElementById("ratinginput").value;
+        // Add an item in the formdata for the Id of the recipe at index 0.
+        formData.append('recipeId', modelId);
+        // Add an item in the formdata for the given rating of the recipe at index 1.
+        formData.append('ratingValue', inputVar);
+        // Call RateRecipe method in Controller and give formdata. 
+        $.ajax({
+            type: 'POST',
+            url: '/CookBook/RateRecipe',
+            data: formData,
+            processData: false,
+            contentType: false,  
+            // Returns error despite successfully running method?
+            success: function (ratingresponse) {
+               alert(ratingresponse);
+            }, error: function () {
+                alert(" conection to the server failed ");
+            }
+        });
+       
+        // Make sure we dont do anything else.
+        return false;   
+    } 
+
+</script>
+
+<div style="background-color: #81c760;">
+    <h2>@Html.DisplayFor(model => model.Name)</h2>
+</div>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PrepTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrepTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Calories)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Calories)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ingredients)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Instructions)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Instructions)
+        </dd>
+    </dl>
+    <link href="~/css/rating.css" rel="stylesheet" />
+
+    <form>
+        <div class="form-group">
+            <input asp-for="Rating" id="ratinginput" class="form-control" type="number" value="0" min="0" max="5" />
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Rate!" id="RateButton" class="btn btn-default" formaction="javascript:submitRating();"/>
+
+
+        </div>
+    </form>
+
+</div>
+
+<div>
+    @using (Html.BeginForm("RecipeList", "CookBook", FormMethod.Post))
+    {
+        <input class="btn" type="submit" value="Back" />
+    }
+</div>

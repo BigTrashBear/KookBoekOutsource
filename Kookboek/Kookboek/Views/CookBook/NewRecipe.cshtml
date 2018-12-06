@@ -1,0 +1,103 @@
+﻿@using Kookboek.Models;
+
+@model RecipeModel
+
+@{
+    ViewData["Title"] = "AddRecipe";
+}
+<link href="~/css/newRecipe.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/addNewIngredient.js"></script>
+
+<div style="background-color: #81c760;">
+    <h2>Add a new recipe</h2>
+</div>
+
+<div class="imageContainer">
+    <input type="file" class="imageUpload" name="image" onchange="readURL(this);" />
+    <img src="#" id="image">
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+
+        @using (Html.BeginForm("PostNewRecipe", "CookBook", FormMethod.Post, new { id = "newrecipeform"}))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="primaryContainer">
+                <div class="subContainer">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="subContainer">
+                    <div class="numericContainer">
+                        <div class="form-group">
+                            <label asp-for="PrepTime" class="control-label"></label>
+                            <input asp-for="PrepTime" class="form-control" min="0" type="number" value="0" />
+                            <span asp-validation-for="PrepTime" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subContainer">
+                    <div class="numericContainer">
+                        <div class="form-group">
+                            <label asp-for="Calories" class="control-label"></label>
+                            <input asp-for="Calories" class="form-control" min="0" type="number" value="0" />
+                            <span asp-validation-for="Calories" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subContainer">
+                    <div class="form-group">
+                        <label asp-for="Ingredients" class="control-label"></label>
+                        <select asp-for="Ingredients" name="Ingredients" size="5" id="ingredientListbox" class="form-control" multiple/>
+                        <span asp-validation-for="Ingredients" class="text-danger"></span>
+                        <div style="height: 500px;"></div>
+                        <input class="btn" type="submit" value="Remove selected" formaction="javascript:removeSelectedIngredient();" />
+
+
+                        <div style="height:15px;"></div>
+                        <input id="ingredientInputField" class="form-control" />
+
+                        <div style="height:5px;"></div>
+
+                        <input class="btn" type="submit" value="Add" formaction="javascript:addIngredient();" />
+                    </div>
+                </div>
+
+                <div class="subContainer">
+                    <div class="form-group">
+                        <label asp-for="Instructions" class="control-label"></label>
+                        <textarea asp-for="Instructions" rows="5" id="instructionInputField" class="form-control"></textarea>
+                        <span asp-validation-for="Instructions" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="subContainer">
+                    <div class="form-group" id="labelBackground">
+
+                        <input class="btn" type="submit" value="Post" />
+
+                    </div>
+                </div>
+            </div>
+        }
+        <div>
+            @*Remove button if not necessary*@
+            @using (Html.BeginForm(FormMethod.Post))
+            {
+                <input class="btn" type="submit" value="Back" formaction="@Url.Action("RecipeList", "CookBook")" />
+            }
+        </div>
+    </div>
+</div>
+
+
+
